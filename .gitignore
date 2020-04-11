@@ -1,5 +1,6 @@
 node_modules/
 .DS_Store
+# Heroku environment configuration
 .env
-yarn.lock
+env.cmd
 data.json
