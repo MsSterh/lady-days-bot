@@ -4,7 +4,6 @@ const token = process.env.TOKEN;
 
 const Bot = require('node-telegram-bot-api');
 let bot;
-let isLogged;
 let day = 1;
 
 if(process.env.NODE_ENV === 'production') {
@@ -34,27 +33,14 @@ function currentDayPrediction(day) {
 }
 
 bot.on('message', (msg) => {
-  if (isLogged) {
-    const parsedDay = parseInt(msg.text)
-    if (!!parsedDay && parsedDay >= 1 && parsedDay <= 28) {
-      day = parsedDay
-    } else {
-      bot.sendMessage(msg.chat.id, "Введите день цикла от 1 до 28");
-      return
-    }
-    // bot.sendMessage(msg.chat.id, "День: " + day);
-    bot.sendMessage(msg.chat.id, currentDayPrediction(day), {parse_mode: "HTML"});
+  const parsedDay = parseInt(msg.text)
+  if (!!parsedDay && parsedDay >= 1 && parsedDay <= 28) {
+    day = parsedDay
   } else {
-    if (msg.text === '1') {
-      isLogged = true
-      bot.sendMessage(msg.chat.id, "Введите день цикла от 1 до 28");
-    } else {
-      bot.sendMessage(msg.chat.id, "Для продолжения введи, пожалуйста, пароль:");
-    }
+    bot.sendMessage(msg.chat.id, "Введите день цикла от 1 до 28");
+    return
   }
-  // }
+  bot.sendMessage(msg.chat.id, currentDayPrediction(day), {parse_mode: "HTML"});
 });
-
-
 
 module.exports = bot;
